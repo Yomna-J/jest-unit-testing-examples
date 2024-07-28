@@ -1,3 +1,5 @@
+# This workflow will install dependencies, create coverage tests and run Jest Coverage Comment
+# For more information see: https://github.com/MishaKav/jest-coverage-comment/
 name: Jest Coverage Comment
 on:
   pull_request:
@@ -10,30 +12,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run total coverage tests and generate report
+      - name: Run tests and generate reports
         run: |
-          npx jest --coverage --coverageReporters=json-summary --coverageReporters=text > coverage.txt
-
-      - name: Run specific file coverage tests and generate report
-        run: |
-          npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text > specific-coverage.txt
-
-      - name: Generate combined coverage report
-        run: |
-          echo "## Total Coverage Report" > combined-coverage.md
-          echo "\`\`\`" >> combined-coverage.md
-          cat coverage.txt >> combined-coverage.md
-          echo "\`\`\`" >> combined-coverage.md
-          echo "\n## Specific Files Coverage Report" >> combined-coverage.md
-          echo "\`\`\`" >> combined-coverage.md
-          cat specific-coverage.txt >> combined-coverage.md
-          echo "\`\`\`" >> combined-coverage.md
+          npx jest --coverage --coverageReporters=json-summary --coverageReporters=text | tee ./coverage.txt && exit ${PIPESTATUS[0]}
 
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
-          summary-title: Coverage Summary
-          coverage-path: ./combined-coverage.md
-          coverage-title: Combined Coverage Report
-          create-new-comment: false
+          summary-title: My Summary Title
+          coverage-path: ./coverage.txt
+          coverage-title: My Coverage Title
+
+      - name: Generate specific coverage report
+        run: |
+          npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
+
+      - name: Jest Coverage Comment for specific files
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          coverage-summary-path: ./coverage/coverage-summary.json
+          summary-title: My Summary Title for Specific Files
+          coverage-path: ./specific-coverage.txt
+          coverage-title: My Coverage Title for Specific Files
+          create-new-comment: true
