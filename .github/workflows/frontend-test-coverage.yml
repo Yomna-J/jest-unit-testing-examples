@@ -27,7 +27,7 @@ jobs:
 
       - name: Generate specific coverage report
         run: |
-          npx jest --coverage --collectCoverageFrom='["src/specific-directory/**/*.{js,jsx,ts,tsx}"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
+          npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
 
       - name: Jest Coverage Comment for specific files
         uses: MishaKav/jest-coverage-comment@main
