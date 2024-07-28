@@ -19,7 +19,7 @@ jobs:
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
-              summary-path: ./test-summary.json
+              coverage-summary-path: ./test-summary.json
               summary-title: My Summary Title
               coverage-path: ./coverage.txt
               coverage-title: My Coverage Title
