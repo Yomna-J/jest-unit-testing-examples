@@ -14,11 +14,9 @@ jobs:
 
       - name: Run tests
         run: |
-          npx jest --coverage --coverageReporters json-summary
-          
+          npx jest --coverage | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+      
       - name: Jest Coverage Comment
-        id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
-              coverage-path: ./coverage.txt
-              junitxml-path: ./coverage/junit.xml
+          coverage-path: ./coverage.txt
