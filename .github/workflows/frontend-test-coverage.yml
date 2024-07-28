@@ -16,7 +16,7 @@ jobs:
 
       - name: Run specific file coverage tests and generate report
         run: |
-          npx jest --coverage --collectCoverageFrom='["src/specific-directory/**/*.{js,jsx,ts,tsx}"]' --coverageReporters=json-summary --coverageReporters=text > specific-coverage.txt
+          npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text > specific-coverage.txt
 
       - name: Generate combined coverage report
         run: |
