@@ -12,28 +12,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
     
-
-      - name: Run tests and generate reports
+      - name: Run total coverage tests and generate report
         run: |
           npx jest --coverage --coverageReporters=json-summary --coverageReporters=text | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+
+      - name: Run specific file coverage tests and generate report
+        run: |
+          npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
+
+      - name: Concatenate coverage reports
+        run: |
+          echo "## Total Coverage Report" > combined-coverage.txt
+          cat ./coverage.txt >> combined-coverage.txt
+          echo "\n## Specific Files Coverage Report" >> combined-coverage.txt
+          cat ./specific-coverage.txt >> combined-coverage.txt
 
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
-          summary-title: Total Coverage Summary
-          coverage-path: ./coverage.txt
-          coverage-title: Total Coverage Report
-
-      - name: Generate specific coverage report
-        run: |
-          npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
-
-      - name: Jest Coverage Comment for specific files
-        uses: MishaKav/jest-coverage-comment@main
-        with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          summary-title: Specific Files Coverage Summary
-          coverage-path: ./specific-coverage.txt
-          coverage-title: Specific Files Coverage Report
-          create-new-comment: true
+          summary-title: Coverage Summary
+          coverage-path: ./combined-coverage.txt
+          coverage-title: Combined Coverage Report
