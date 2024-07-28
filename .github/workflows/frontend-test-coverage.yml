@@ -12,11 +12,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+
       - name: Run tests
         run: |
-          npx jest --coverage | tee ./coverage.txt && exit ${PIPESTATUS[0]}
-      
+          npx jest --coverage --json --outputFile=./test-summary.json --reporters=default --reporters=jest-junit | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
+          summary-path: ./test-summary.json
+          summary-title: My Summary Title
+          junitxml-path: ./junit.xml
+          junitxml-title: My JUnit Title
           coverage-path: ./coverage.txt
+          coverage-title: My Coverage Title
