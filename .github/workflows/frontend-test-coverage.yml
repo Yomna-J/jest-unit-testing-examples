@@ -13,11 +13,7 @@ jobs:
         run: npm ci
     
       - name: Run Tests
-        run: npm run test:coverage | tee ./coverage.txt
+        run: npx run jest
         
       - name: Jest Coverage Comment
-        id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
-        with:
-              coverage-path: ./coverage.txt
-              junitxml-path: ./coverage/junit.xml
