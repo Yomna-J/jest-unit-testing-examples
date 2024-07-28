@@ -17,7 +17,8 @@ jobs:
           npm run test:coverage | tee ./coverage.txt
           
       - name: Jest Coverage Comment
+        id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          coverage-path: ./coverage.txt
+              coverage-path: ./coverage.txt
+              junitxml-path: ./coverage/junit.xml
