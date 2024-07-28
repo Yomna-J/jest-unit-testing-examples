@@ -14,12 +14,12 @@ jobs:
         
       - name: Run tests
         run: |
-              npx jest --coverage --json --outputFile=./test-summary.json | tee ./coverage.txt && exit ${PIPESTATUS[0]}
-    
+              npx jest --coverage --coverageReporters=json-summary | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
-              coverage-summary-path: ./test-summary.json
-              summary-title: My Summary Title
-              coverage-path: ./coverage.txt
-              coverage-title: My Coverage Title
+          coverage-summary-path: ./coverage/coverage-summary.json
+          summary-title: My Summary Title
+          coverage-path: ./coverage.txt
+          coverage-title: My Coverage Title
