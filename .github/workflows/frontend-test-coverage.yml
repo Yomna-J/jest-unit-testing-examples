@@ -11,7 +11,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run total coverage tests and generate report
         run: |
           npx jest --coverage --coverageReporters=json-summary --coverageReporters=text | tee ./coverage.txt && exit ${PIPESTATUS[0]}
@@ -20,26 +20,18 @@ jobs:
         run: |
           npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
 
-      - name: Generate combined summary report
+      - name: Generate combined coverage report
         run: |
-          echo "## Coverage Summary for Total" > combined-summary.json
-          cat ./coverage/coverage-summary.json >> combined-summary.json
-          echo "\n## Coverage Summary for Specific Files" >> combined-summary.json
-          cat ./coverage/coverage-summary.json >> combined-summary.json
+          echo "## Total Coverage Report" > combined-coverage.txt
+          cat ./coverage.txt >> combined-coverage.txt
+          echo "\n## Specific Files Coverage Report" >> combined-coverage.txt
+          cat ./specific-coverage.txt >> combined-coverage.txt
 
-      - name: Jest Coverage Comment for total coverage
+      - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
-          summary-title: Total Coverage Summary
-          coverage-path: ./coverage.txt
-          coverage-title: Total Coverage Report
-
-      - name: Jest Coverage Comment for specific files
-        uses: MishaKav/jest-coverage-comment@main
-        with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          summary-title: Specific Files Coverage Summary
-          coverage-path: ./specific-coverage.txt
-          coverage-title: Specific Files Coverage Report
+          summary-title: Coverage Summary
+          coverage-path: ./combined-coverage.txt
+          coverage-title: Combined Coverage Report
           create-new-comment: false
