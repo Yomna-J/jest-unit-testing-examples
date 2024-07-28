@@ -13,7 +13,7 @@ jobs:
         run: npm ci
     
       - name: Run Tests
-        run: npx run jest
+        run: npx run test
         
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
