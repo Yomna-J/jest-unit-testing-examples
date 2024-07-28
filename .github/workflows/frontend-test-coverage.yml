@@ -25,14 +25,19 @@ jobs:
           coverage-path: ./coverage.txt
           coverage-title: My Coverage Title
 
-      - name: Generate specific coverage report
+      - name: Run overall tests and generate reports
+        run: |
+          npx jest --coverage --coverageReporters=json-summary --coverageReporters=text | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+
+      - name: Run specific tests and generate reports
         run: |
           npx jest --coverage --collectCoverageFrom='["src/simple.js"]' --coverageReporters=json-summary --coverageReporters=text | tee ./specific-coverage.txt && exit ${PIPESTATUS[0]}
 
-      - name: Jest Coverage Comment for specific files
+      - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          summary-title: My Summary Title for Specific Files
-          coverage-path: ./specific-coverage.txt
-          coverage-title: My Coverage Title for Specific Files
+          multiple-files: |
+            My Total Coverage Title, ./coverage/coverage-summary.json
+            My Specific Files Coverage Title, ./specific-coverage/coverage-summary.json
+          coverage-path: ./coverage.txt
+          coverage-title: My Total Coverage Report
