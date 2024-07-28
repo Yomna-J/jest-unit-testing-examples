@@ -23,9 +23,13 @@ jobs:
       - name: Generate combined coverage report
         run: |
           echo "## Total Coverage Report" > combined-coverage.txt
+          echo "\`\`\`" >> combined-coverage.txt
           cat ./coverage.txt >> combined-coverage.txt
+          echo "\`\`\`" >> combined-coverage.txt
           echo "\n## Specific Files Coverage Report" >> combined-coverage.txt
+          echo "\`\`\`" >> combined-coverage.txt
           cat ./specific-coverage.txt >> combined-coverage.txt
+          echo "\`\`\`" >> combined-coverage.txt
 
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
