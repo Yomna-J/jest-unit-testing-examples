@@ -1,4 +1,5 @@
 const URL = 'https://api.github.com/';
+cont msg = "hello";
 
 class Advanced {
   // fetch is the dependency window.fetch which is being added into the constructor
